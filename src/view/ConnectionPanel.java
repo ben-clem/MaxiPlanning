@@ -3,16 +3,25 @@ package view;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
- * classe ConnectionPanel (panneau connection) test
+ * classe ConnectionPanel (panneau connection)
  */
-public class ConnectionPanel extends JPanel {
+public final class ConnectionPanel extends JPanel {
 
     // ATTRIBUTS
 
-    Color bg = new Color(0, 113, 121);
+    private Color bg = new Color(0, 113, 121);
+    
+    private JLabel logoLabel;
+    private JLabel titre;
+    
+    private JPanel connectionForm;
+    private JTextField emailField;
+    private JTextField passwordField;
+    private JButton connButton;
 
     // METHODES
 
@@ -20,44 +29,37 @@ public class ConnectionPanel extends JPanel {
      * default constructor
      */
     public ConnectionPanel() {
-
-        initPanel();
-   
-    }
-    
-    /**
-     * initialisation
-     */
-    public final void initPanel() {
+       
+        // Background et Layout
         
         setBackground(bg);
-
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
+        // Logo
+        
         try {
             Image img = ImageIO.read(getClass().getResource("img/logoECE.jpg"));
             img = img.getScaledInstance(-1, 150, Image.SCALE_SMOOTH);
             ImageIcon logo = new ImageIcon(img);
-            JLabel logoLabel = new JLabel(logo);
+            logoLabel = new JLabel();
+            logoLabel.setIcon(logo);
             logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             logoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            add(logoLabel);
-
+            
         } catch (IOException e) {
             e.printStackTrace(System.out);
         }
 
-        JLabel titre = new JLabel("MaxiPlanning");
+        // Titre
+        
+        titre = new JLabel("MaxiPlanning");
         titre.setFont(new Font("Helvetica Neue", Font.BOLD, 28));
         titre.setForeground(Color.white);
         titre.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(titre);
-
-        add(Box.createVerticalGlue());
-
+        
         // Connection Form
 
-        JPanel connectionForm = new JPanel();
+        connectionForm = new JPanel();
         connectionForm.setLayout(new BoxLayout(connectionForm, BoxLayout.PAGE_AXIS));
         connectionForm.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 
@@ -76,13 +78,12 @@ public class ConnectionPanel extends JPanel {
         JLabel emailLabel = new JLabel("email :");
         email.add(emailLabel);
 
-        JTextField emailField = new JTextField();
+        emailField = new JTextField();
         emailField.setColumns(10);
         email.add(emailField);
 
         email.setMaximumSize(new Dimension(500, 40));
         connectionForm.add(email);
-
         
         JPanel password = new JPanel();
         password.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -90,7 +91,7 @@ public class ConnectionPanel extends JPanel {
         JLabel passwordLabel = new JLabel("password :");
         password.add(passwordLabel);
 
-        JTextField passwordField = new JTextField();
+        passwordField = new JTextField();
         passwordField.setColumns(10);
         password.add(passwordField);
 
@@ -99,19 +100,58 @@ public class ConnectionPanel extends JPanel {
 
         connectionForm.add(Box.createRigidArea(new Dimension(0,30)));
 
-        JButton connButton = new JButton("Connexion");
+        connButton = new JButton("Connexion");
         connButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // /* ACTION LISTENER */
         connectionForm.add(connButton);
 
         connectionForm.add(Box.createVerticalGlue());
 
-        add(connectionForm);
-
-        // Fin Connection Form
-
-        add(Box.createVerticalGlue());
+        // Adding components
+        
+        this.add(logoLabel);
+        this.add(titre);
+        this.add(Box.createVerticalGlue());
+        this.add(connectionForm);
+        this.add(Box.createVerticalGlue());
+   
+    }
+    
+    /**
+     * @return the email
+     */
+    public String getEmail(){
+        
+        return emailField.getText();
         
     }
-   
+
+    /**
+     * @return the password
+     */
+    public String getPassword(){
+
+        return passwordField.getText();
+
+    }
+    
+    /**
+     * adds an ActionListener to the ConnButton
+     * @param listenForConnButton ActionListener added by the controller
+     */
+    public void addConnButtonListener(ActionListener listenForConnButton){
+
+        connButton.addActionListener(listenForConnButton);
+         
+    }
+    
+    /**
+     * génère un popup
+     * @param message
+     */
+    public void popupMessage(String message){
+		
+		JOptionPane.showMessageDialog(this, message);
+		
+	}
+
 }
