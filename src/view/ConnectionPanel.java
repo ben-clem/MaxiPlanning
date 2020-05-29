@@ -145,12 +145,32 @@ public final class ConnectionPanel extends JPanel {
     }
     
     /**
-     * génère un popup
+     * génère un popup simple
      * @param message
      */
-    public void popupMessage(String message){
+    public void popup(String message){
 		
-		JOptionPane.showMessageDialog(this, message);
+		JOptionPane.showMessageDialog(this, message, "Message", JOptionPane.PLAIN_MESSAGE);
+		
+	}
+    
+    /**
+     * génère un popup de Warning
+     * @param message
+     */
+    public void popupWarning(String message){
+		
+		JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
+		
+	}
+    
+     /**
+     * génère un popup d'Erreur
+     * @param message
+     */
+    public void popupError(String message){
+		
+		JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
 		
 	}
 

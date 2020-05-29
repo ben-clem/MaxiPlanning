@@ -4,6 +4,7 @@ import java.sql.*;
 
 /**
  * classe template mère abstract DAO
+ * @param <T>
  */
 public abstract class DAO<T> {
 
@@ -30,6 +31,7 @@ public abstract class DAO<T> {
 
     /**
      * constructor
+     * @param connect
      */
     public DAO(Connection connect) {
         this.connect = connect;
@@ -37,21 +39,37 @@ public abstract class DAO<T> {
 
     /**
      * recherche dans la BDD
+     * @param id
+     * @return 
      */
     public abstract T find(Integer id);
+    
+    /**
+     * recherche dans la BDD
+     * @param email
+     * @param password
+     * @return 
+     */
+    public abstract T find(String email, String password);
 
     /**
      * ajout dans la BDD
+     * @param obj
+     * @return 
      */
     public abstract boolean create(T obj);
 
     /**
      * update dans la BDD
+     * @param obj
+     * @return 
      */
     public abstract boolean update(T obj);
 
     /**
      * suppression dans la BDD
+     * @param obj
+     * @return 
      */
     public abstract boolean delete(T obj);
 

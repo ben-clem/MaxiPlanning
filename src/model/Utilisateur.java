@@ -71,9 +71,20 @@ public class Utilisateur {
 
     /**
      * constructor
+     * @param id
+     * @param droit
+     * @param nom
+     * @param prenom
+     * @param email
+     * @param password
      */
     public Utilisateur(Integer id, Integer droit, String nom, String prenom, String email, String password) {
-        // TODO
+        this.id = id;
+        this.droit = droit;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.password = password;
     }
 
 }
