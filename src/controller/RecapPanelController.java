@@ -4,7 +4,7 @@ package controller;
 /**
 * @generated
 */
-public class RecapPanelController {
+public class RecapPanelController extends PanelController {
     
     
     // /**

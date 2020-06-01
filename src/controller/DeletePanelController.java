@@ -4,7 +4,7 @@ package controller;
 /**
 * @generated
 */
-public class DeletePanelController {
+public class DeletePanelController extends PanelController {
     
     
     // /**

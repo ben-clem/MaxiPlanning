@@ -4,7 +4,7 @@ package controller;
 /**
 * @generated
 */
-public class UpdatePanelController {
+public class UpdatePanelController extends PanelController {
     
     
     // /**

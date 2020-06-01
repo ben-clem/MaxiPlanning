@@ -4,7 +4,7 @@ package controller;
 /**
 * @generated
 */
-public class SearchPanelController {
+public class SearchPanelController extends PanelController {
     
     
     // /**

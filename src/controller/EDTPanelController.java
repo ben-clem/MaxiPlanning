@@ -4,7 +4,7 @@ package controller;
 /**
 * @generated
 */
-public class EDTPanelController {
+public class EDTPanelController extends PanelController {
     
     
     // /**
