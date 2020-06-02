@@ -1,5 +1,7 @@
 package view;
 
-public class menuBar {
+import javax.swing.JMenuBar;
+
+public class menuBar extends JMenuBar {
     
 }

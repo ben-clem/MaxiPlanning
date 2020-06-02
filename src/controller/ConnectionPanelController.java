@@ -13,7 +13,11 @@ import view.ConnectionPanel;
 // between the View and Model
 public class ConnectionPanelController extends PanelController {
 
+    //
     // ATTRIBUTS
+    //
+    protected ConnectionPanel theView;
+
     // On implémente l'ActionListener
     class ConnButtonListener implements ActionListener {
 
@@ -42,10 +46,21 @@ public class ConnectionPanelController extends PanelController {
                     // On affiche dans la console
                     System.out.println("Utilisateur n°" + utilisateur.getId() + " - Droit : " + utilisateur.getDroit() + " - " + utilisateur.getNom() + " " + utilisateur.getPrenom() + " " + utilisateur.getEmail() + " " + utilisateur.getPassword());
 
-                    // Il faut maintenant rediriger vers une page en fonction du type d'utilisateur
-                    if (utilisateur.getId() != null) {
+                    // Si utilisateur introuvable :
+                    if (utilisateur.getId() == null) {
+                        theView.popupWarning("Utilisateur introuvable !\nVeuillez vérifier vos identifiants.");
+                    }
+
+                    // Si trouvé, il faut maintenant rediriger vers une page en fonction du type d'utilisateur
+                    else if (utilisateur.getId() != null) {
                         currentUser = utilisateur;
                         needRefresh = true;
+
+                        if (utilisateur.getDroit() == 1) {
+                            refreshType = "loadSearchPanel";
+                        } else if (utilisateur.getDroit() == 2 || utilisateur.getDroit() == 3 || utilisateur.getDroit() == 4) {
+                            refreshType = "loadEDTPanel";
+                        }
                     }
                 }
 
@@ -60,7 +75,9 @@ public class ConnectionPanelController extends PanelController {
 
     }
 
+    //
     // METHODES
+    //
     /**
      * base constructor
      *

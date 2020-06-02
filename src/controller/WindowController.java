@@ -1,7 +1,10 @@
 package controller;
 
+import java.time.ZonedDateTime;
+import java.time.temporal.IsoFields;
 import java.util.Calendar;
-import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import model.Utilisateur;
 import view.*;
 
@@ -10,11 +13,19 @@ import view.*;
  */
 public class WindowController {
 
-    // ATTRIBUTS
-    private Utilisateur currentUser = null;
-    private boolean needRefresh = false;
+    ///////////////
+    // ATTRIBUTS //
+    ///////////////
+    private Window win;
 
-    // METHODES
+    private boolean needRefresh = false;
+    private String refreshType;
+
+    private Utilisateur currentUser = null;
+
+    //////////////
+    // METHODES //
+    //////////////
     /**
      * main
      *
@@ -22,37 +33,44 @@ public class WindowController {
      */
     public static void main(String[] args) {
 
+        // Making the look and feel universal
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace(System.err);
+        }
+
         // On instancie la classe
         WindowController winCon = new WindowController();
 
         // On crée la fenêtre
-        Window win = new Window();
+        winCon.win = new Window();
 
         // La vue
         ConnectionPanel conPan = new ConnectionPanel();
-        win.setContentPane(conPan);
+        winCon.win.setContentPane(conPan);
 
         // Le controlleur
         ConnectionPanelController conPanCon = new ConnectionPanelController(conPan);
 
         // On affiche
-        win.setVisible(true);
+        winCon.win.setVisible(true);
 
         // On lance la boucle infinie de mise à jour
-        winCon.update(conPanCon);
+        winCon.updateLoop(winCon, conPanCon);
 
     }
 
     /**
      * boucle infinie de mise à jour
      */
-    private synchronized void update(PanelController panelController) {
+    private synchronized void updateLoop(WindowController winCon, PanelController panelController) {
 
         while (true) { //tourne en permanence
 
             // delay
             try {
-                this.wait(2000);
+                this.wait(1000);
 
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
@@ -65,12 +83,39 @@ public class WindowController {
             // S'il y a besoin de refresh :
             if (needRefresh == true) {
 
-                System.out.println("Updating at " + Calendar.getInstance().getTime());
-                
+                System.out.println("Updating at " + ZonedDateTime.now());
+                // On va cherche quel est le type de refresh needed
+                refreshType = panelController.getRefreshType();
+
+                if (refreshType.equals("loadEDTPanel")) {
+
+                    currentUser = panelController.getCurrentUser();
+                    System.out.println("Loading EDT Panel for");
+                    System.out.println("currentUser = " + currentUser.getId());
+
+                    // On crée la vue et le controlleur
+                    EDTPanel edtPanel = new EDTPanel(currentUser);
+                    EDTPanelController edtPanelController = new EDTPanelController(edtPanel);
+                    
+                    
+                    // On affiche
+                    winCon.win.setContentPane(edtPanel);
+                    winCon.win.setVisible(true);
+
+                    // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
+                    panelController = edtPanelController;
+
+                }
+                if (refreshType.equals("loadSearchPanel")) {
+
+                    currentUser = panelController.getCurrentUser();
+                    System.out.println("Loading Search Panel for");
+                    System.out.println("currentUser = " + currentUser.getId());
+
+                }
 
                 // UPDATE
                 currentUser = panelController.getCurrentUser();
-                System.out.println("currentUser = " + currentUser.getId());
 
             }
         }

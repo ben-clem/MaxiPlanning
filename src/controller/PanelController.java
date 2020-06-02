@@ -10,9 +10,12 @@ import view.ConnectionPanel;
 public abstract class PanelController {
 
     // ATTRIBUTS
-    protected ConnectionPanel theView;
-    protected Utilisateur currentUser = null;
+    
+
     protected boolean needRefresh = false;
+    protected String refreshType;
+
+    protected Utilisateur currentUser = null;
 
     // GETTERS / SETTERS
     public boolean getNeedRefresh() {
@@ -21,5 +24,9 @@ public abstract class PanelController {
 
     public Utilisateur getCurrentUser() {
         return this.currentUser;
+    }
+
+    public String getRefreshType() {
+        return this.refreshType;
     }
 }
