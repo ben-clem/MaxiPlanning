@@ -1,8 +1,6 @@
 package controller;
 
 import java.time.ZonedDateTime;
-import java.time.temporal.IsoFields;
-import java.util.Calendar;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.Utilisateur;
@@ -78,14 +76,17 @@ public class WindowController {
 
             // get info
             needRefresh = panelController.getNeedRefresh();
-            System.out.println("needRefresh = " + needRefresh);
-
+            //System.out.println("needRefresh = " + needRefresh);
+            System.out.println(".");
+            
             // S'il y a besoin de refresh :
             if (needRefresh == true) {
 
-                System.out.println("Updating at " + ZonedDateTime.now());
+                System.out.println("-- needRefresh = " + needRefresh + " --");
+                System.out.println("-- Updating at " + ZonedDateTime.now() + " --");
                 // On va cherche quel est le type de refresh needed
                 refreshType = panelController.getRefreshType();
+                System.out.println("-- refreshType = " + refreshType + " --");
 
                 if (refreshType.equals("loadEDTPanel")) {
 
@@ -95,7 +96,7 @@ public class WindowController {
 
                     // On crée la vue et le controlleur
                     EDTPanel edtPanel = new EDTPanel(currentUser);
-                    EDTPanelController edtPanelController = new EDTPanelController(edtPanel);
+                    EDTPanelController edtPanelController = new EDTPanelController(currentUser, edtPanel);
                     
                     
                     // On affiche

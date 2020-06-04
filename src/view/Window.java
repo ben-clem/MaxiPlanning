@@ -25,7 +25,7 @@ public class Window extends JFrame {
     public final void initWindow() {
 
         setTitle("MaxiPlanning");
-        setSize(800, 500);
+        setSize(960, 540);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

@@ -1,19 +1,19 @@
 package model;
 
 import java.sql.*;
+import java.util.List;
 
 /**
  * classe template mère abstract DAO
+ *
  * @param <T>
  */
 public abstract class DAO<T> {
 
     // ATTRIBUTS
-
     protected Connection connect = null;
 
     // GETTERS / SETTERS
-
     protected Connection getConnect() {
         return this.connect;
     }
@@ -23,14 +23,15 @@ public abstract class DAO<T> {
     }
 
     // METHODES
-
     /**
      * default constructor
      */
-    public DAO() {}
+    public DAO() {
+    }
 
     /**
      * constructor
+     *
      * @param connect
      */
     public DAO(Connection connect) {
@@ -39,38 +40,55 @@ public abstract class DAO<T> {
 
     /**
      * recherche dans la BDD
+     *
      * @param id
-     * @return 
+     * @return
      */
     public abstract T find(Integer id);
-    
+
     /**
      * recherche dans la BDD
+     *
      * @param email
      * @param password
-     * @return 
+     * @return
      */
     public abstract T find(String email, String password);
+    
+     /**
+     * recherche dans la BDD
+     *
+     * @param id
+     * @return
+     */
+    public abstract List<T> findWithStudentId(Integer id);
+
+    public abstract List<T> findAllWithSeanceId(Integer id);
 
     /**
      * ajout dans la BDD
+     *
      * @param obj
-     * @return 
+     * @return
      */
     public abstract boolean create(T obj);
 
     /**
      * update dans la BDD
+     *
      * @param obj
-     * @return 
+     * @return
      */
     public abstract boolean update(T obj);
 
     /**
      * suppression dans la BDD
+     *
      * @param obj
-     * @return 
+     * @return
      */
     public abstract boolean delete(T obj);
+
+   
 
 }

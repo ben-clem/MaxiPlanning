@@ -26,7 +26,9 @@ public class ConnectionPanelController extends PanelController {
         @Override
         public void actionPerformed(ActionEvent event) {
 
-            try {
+            // Connection à la DB
+            DB db = new DB();
+            try (Connection conn = db.connect()) {
 
                 email = theView.getEmail();
                 password = theView.getPassword();
@@ -34,10 +36,6 @@ public class ConnectionPanelController extends PanelController {
                 if (email.isEmpty() || password.isEmpty()) {
                     theView.popupWarning("Veuillez remplir l'email et le password.");
                 } else {
-
-                    // Connection à la DB
-                    DB db = new DB();
-                    Connection conn = db.connect();
 
                     // On va cherche l'utilisateur correspondant
                     DAO<Utilisateur> utilisateurDAO = new UtilisateurDAO(conn);
@@ -49,9 +47,7 @@ public class ConnectionPanelController extends PanelController {
                     // Si utilisateur introuvable :
                     if (utilisateur.getId() == null) {
                         theView.popupWarning("Utilisateur introuvable !\nVeuillez vérifier vos identifiants.");
-                    }
-
-                    // Si trouvé, il faut maintenant rediriger vers une page en fonction du type d'utilisateur
+                    } // Si trouvé, il faut maintenant rediriger vers une page en fonction du type d'utilisateur
                     else if (utilisateur.getId() != null) {
                         currentUser = utilisateur;
                         needRefresh = true;
@@ -67,7 +63,7 @@ public class ConnectionPanelController extends PanelController {
             } catch (Exception e) {
 
                 e.printStackTrace(System.err);
-                theView.popupError("Erreur : " + e);
+                theView.popupError("Erreur lors de la connexion à la DB !\nErreur : " + e);
 
             }
 

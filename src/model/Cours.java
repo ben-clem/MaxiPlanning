@@ -37,9 +37,12 @@ public class Cours {
 
     /**
      * constructor
+     * @param id
+     * @param nom
      */
     public Cours(Integer id, String nom) {
-        // TODO
+        this.id = id;
+        this.nom = nom;
     }
 
 }

@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.*;
+import java.util.List;
 
 /**
  * classe Utilisateur couche DAO
@@ -11,8 +12,7 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
     /**
      * default constructor
      */
-    public UtilisateurDAO() {
-    }
+    public UtilisateurDAO() {}
 
     /**
      * constructor
@@ -23,22 +23,24 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         super(connect);
     }
 
-     /**
+    /**
      * méthode de UtilisateurDAO qui recherche dans la BDD avec l'ID
+     *
      * @return un objet Utilisateur
      */
     @Override
     public Utilisateur find(Integer id) {
 
         Utilisateur utilisateur = new Utilisateur();
-        
+
         // TODO
-        
         return utilisateur;
     }
 
     /**
-     * méthode de UtilisateurDAO qui recherche dans la BDD avec l'email et le password
+     * méthode de UtilisateurDAO qui recherche dans la BDD avec l'email et le
+     * password
+     *
      * @return un objet Utilisateur
      */
     @Override
@@ -95,5 +97,17 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         // TODO
         return false;
     }
+
+    @Override
+    public List<Utilisateur> findWithStudentId(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Utilisateur> findAllWithSeanceId(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+  
 
 }

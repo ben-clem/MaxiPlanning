@@ -37,9 +37,12 @@ public class Promotion {
 
     /**
      * constructor
+     * @param id
+     * @param nom
      */
     public Promotion(Integer id, String nom) {
-        // TODO
+        this.id = id;
+        this.nom = nom;
     }
     
 }

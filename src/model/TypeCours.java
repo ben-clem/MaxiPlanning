@@ -37,9 +37,12 @@ public class TypeCours {
 
     /**
      * constructor
+     * @param id
+     * @param nom
      */
     public TypeCours(Integer id, String nom) {
-        // TODO
+        this.id = id;
+        this.nom = nom;
     }
 
 }

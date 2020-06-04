@@ -1,7 +1,6 @@
 package controller;
 
 import model.Utilisateur;
-import view.ConnectionPanel;
 
 /**
  *
@@ -14,8 +13,7 @@ public abstract class PanelController {
 
     protected boolean needRefresh = false;
     protected String refreshType;
-
-    protected Utilisateur currentUser = null;
+    protected Utilisateur currentUser;
 
     // GETTERS / SETTERS
     public boolean getNeedRefresh() {

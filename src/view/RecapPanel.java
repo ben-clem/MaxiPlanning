@@ -1,5 +1,7 @@
 package view;
 
+import javax.swing.JPanel;
+
 
 /**
 * @generated
@@ -16,6 +18,7 @@ public class RecapPanel extends JPanel {
 
     
     /**
+     * @return 
     * @generated
     */
     public Window getW() {
@@ -23,9 +26,10 @@ public class RecapPanel extends JPanel {
     }
     
     /**
+     * @param w
     * @generated
     */
-    public Window setW(Window w) {
+    public void setW(Window w) {
         this.w = w;
     }
     
