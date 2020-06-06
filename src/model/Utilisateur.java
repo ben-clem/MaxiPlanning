@@ -1,5 +1,8 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * classe Utilisateur couche métier
  */
@@ -7,13 +10,12 @@ public class Utilisateur {
 
     private Integer id;
     private Integer droit;
-    private String nom;
+    private String nom = "?";
     private String prenom;
     private String email;
     private String password;
 
     // GETTERS / SETTERS
-
     public Integer getId() {
         return this.id;
     }
@@ -24,6 +26,25 @@ public class Utilisateur {
 
     public Integer getDroit() {
         return this.droit;
+    }
+
+    public String getNomDroit() {
+
+        if (null != this.droit) {
+            switch (this.droit) {
+                case 1:
+                    return "Administrateur";
+                case 2:
+                    return "Professeur référent";
+                case 3:
+                    return "Professeur";
+                case 4:
+                    return "Etudiant";
+                default:
+                    break;
+            }
+        }
+        return null;
     }
 
     public void setDroit(Integer droit) {
@@ -63,14 +84,15 @@ public class Utilisateur {
     }
 
     // METHODES
-
     /**
      * default constructor
      */
-    public Utilisateur() {}
+    public Utilisateur() {
+    }
 
     /**
      * constructor
+     *
      * @param id
      * @param droit
      * @param nom
@@ -85,6 +107,41 @@ public class Utilisateur {
         this.prenom = prenom;
         this.email = email;
         this.password = password;
+    }
+
+    /**
+     * renvoie l'étudiant correspondant à un utilisateur si celui ci est un
+     * étudiant
+     *
+     * @return
+     */
+    public Etudiant getEtudiant() {
+
+        if (this.droit == 4) {
+            Etudiant etudiant = new Etudiant();
+
+            try {
+
+                // Connection à la DB
+                DB db = new DB();
+                // On va cherche le cours correspondant
+                try (Connection conn = db.connect()) {
+                    // On va cherche le cours correspondant
+                    DAO<Etudiant> etudiantDAO = new EtudiantDAO(conn);
+                    etudiant = etudiantDAO.find(this.id);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace(System.err);
+
+            }
+
+            return etudiant;
+        } else {
+            return null;
+        }
+
     }
 
 }

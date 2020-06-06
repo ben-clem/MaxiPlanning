@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +33,32 @@ public class SalleDAO extends DAO<Salle> {
         return result;
     }
 
+    @Override
+    public List<Salle> findAllWithSeanceId(Integer id) {
+
+        List<Salle> salles = new ArrayList<>();
+
+        try {
+            ResultSet result = this.connect.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance\n"
+                            + "INNER JOIN seance_salles ON seance.ID_seance  = seance_salles.ID_seance\n"
+                            + "INNER JOIN salle ON seance_salles.ID_salle = salle.ID_salle\n"
+                            + "WHERE seance.ID_seance = " + id);
+            while (result.next()) {
+                salles.add(new Salle(
+                        result.getInt("ID_salle"),
+                        result.getString("Nom"),
+                        result.getInt("Capacite"),
+                        result.getInt("ID_site")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.err);
+        }
+        return salles;
+
+    }
+    
     /**
      * ajout dans la BDD
      */
@@ -70,8 +97,10 @@ public class SalleDAO extends DAO<Salle> {
     }
 
     @Override
-    public List<Salle> findAllWithSeanceId(Integer id) {
+    public Salle findWithSeanceID(Integer idSeance) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
 
 }

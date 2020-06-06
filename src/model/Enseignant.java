@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -7,12 +9,16 @@ import java.util.*;
  */
 public class Enseignant {
 
-    // ATTRIBUTS
+    ///////////////
+    // ATTRIBUTS //
+    ///////////////
 
     private Integer idUtilisateur;
-    private Set<Integer> idCours;
+    private List<Integer> idCours;
 
-    // GETTERS / SETTERS
+    ///////////////////////
+    // GETTERS / SETTERS //
+    ///////////////////////
 
     public Integer getIdUtilisateur() {
         return this.idUtilisateur;
@@ -22,18 +28,20 @@ public class Enseignant {
         this.idUtilisateur = idUtilisateur;
     }
 
-    public Set<Integer> getIdCours() {
+    public List<Integer> getIdCours() {
         if (this.idCours == null) {
-            this.idCours = new HashSet<Integer>();
+            this.idCours = new ArrayList<>();
         }
         return this.idCours;
     }
 
-    public void setIdCours(Set <Integer> idCours) {
+    public void setIdCours(List<Integer> idCours) {
         this.idCours = idCours;
     }
 
-    // METHODES
+    //////////////
+    // METHODES //
+    //////////////
 
     /**
      * default constructor
@@ -42,18 +50,58 @@ public class Enseignant {
     }
 
     /**
-     * base constructor
+     * base constructor (avec id et list des id de cours que donne l'enseignant (ex: id(Traitement du signal), id(VHDL))
+     * Mieux : faire que Enseignant contienne une List< Cours >
+     * @param idUtilisateur
+     * @param idCours
      */
+    public Enseignant(Integer idUtilisateur, List<Integer> idCours) {
+       this.idUtilisateur = idUtilisateur;
+       this.idCours = idCours;
+    }
+    
     public Enseignant(Integer idUtilisateur) {
-        // TODO
+       this.idUtilisateur = idUtilisateur;
     }
 
     /**
-     * ajout d'un Cours à l'Enseignant
+     * ajout d'un id(Cours) à l'Enseignant
+     * @param idCours 
      */
-    public boolean addCours(Integer idCours) {
+    public void addCoursID(Integer idCours) {
+        this.idCours.add(idCours);
+    }
+    
+    /**
+     * ajout d'un Cours à l'Enseignant
+     * @param idCours
+     * @return 
+     */
+    public boolean addCours(Cours idCours) {
         // TODO
         return false;
     }
 
+    public String getNom() {
+        Utilisateur user = new Utilisateur();
+
+        try {
+
+            // Connection à la DB
+            DB db = new DB();
+            // On va cherche le cours correspondant
+            try (Connection conn = db.connect()) {
+                // On va cherche le cours correspondant
+                DAO<Utilisateur> userDAO = new UtilisateurDAO(conn);
+                user = userDAO.find(this.idUtilisateur);
+            }
+            
+        } catch (SQLException e) {
+
+            e.printStackTrace(System.err);
+
+        }
+
+        return user.getNom();
+    }
 }

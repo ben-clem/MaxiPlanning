@@ -55,7 +55,23 @@ public class GroupeDAO extends DAO<Groupe> {
      */
     @Override
     public Groupe find(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Groupe groupe = new Groupe();
+
+        try {
+            ResultSet result = this.connect.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM groupe\n"
+                            + "WHERE ID_groupe = " + id);
+            if (result.first()) {
+                groupe = new Groupe(
+                        result.getInt("ID_groupe"),
+                        result.getString("Nom"),
+                        result.getInt("ID_promotion"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.err);
+        }
+        return groupe;
     }
 
     /**
@@ -92,6 +108,11 @@ public class GroupeDAO extends DAO<Groupe> {
 
     @Override
     public List<Groupe> findWithStudentId(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Groupe findWithSeanceID(Integer idSeance) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

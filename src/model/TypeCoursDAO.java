@@ -93,4 +93,9 @@ public class TypeCoursDAO extends DAO<TypeCours> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public TypeCours findWithSeanceID(Integer idSeance) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

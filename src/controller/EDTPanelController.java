@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JComboBox;
 import model.DAO;
 import model.DB;
 import model.Seance;
@@ -36,6 +39,50 @@ public final class EDTPanelController extends PanelController {
         }
 
     }
+    
+        // On implémente l'ActionListener du button2
+    class Button2Listener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            needRefresh = true;
+            refreshType = "loadRecapPanel";
+
+        }
+
+    }
+
+    // On implémente l'ActionListener du choice
+    class ChoiceListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            // en grille
+        }
+
+    }
+
+    // On implémente l'ActionListener du choice2
+    class Choice2Listener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            JComboBox choice2 = (JComboBox) event.getSource();
+
+            Integer semaineGet = (Integer) choice2.getSelectedItem();
+
+            theView.removeChoice2(); // Pour fix le bug où on accédait une deuxième fois au JComboBoc alors que la page était en train dêtre supprimée / regénérée
+
+            System.out.println("-debug- semaine : " + semaineGet);
+
+            needRefresh = true;
+            refreshType = "loadEDTPanel";
+            semaine = semaineGet;
+
+        }
+    }
 
 //////////////
 // METHODES //
@@ -57,6 +104,9 @@ public final class EDTPanelController extends PanelController {
         // add buttons listeners
         // On connecte l'ActionListener à la vue
         this.theView.addButton1Listener(new Button1Listener());
+        this.theView.addButton2Listener(new Button2Listener());
+        this.theView.addChoiceListener(new ChoiceListener());
+        this.theView.addChoice2Listener(new Choice2Listener());
     }
 
     /**
@@ -65,12 +115,12 @@ public final class EDTPanelController extends PanelController {
     public void fetchSeances() {
 
         try {
-            
+
             List<Seance> seances;
-            
+
             // Connection à la DB
             DB db = new DB();
-            
+
             // On va cherche l'utilisateur correspondant
             try (Connection conn = db.connect()) {
                 // On va cherche l'utilisateur correspondant
@@ -80,7 +130,7 @@ public final class EDTPanelController extends PanelController {
 
             // On affiche dans la console
             seances.forEach((seance) -> {
-                System.out.println("Seance : " + seance.getId());
+                //System.out.println("Seance : " + seance.getId());
             });
 
             // Si pas de séances :

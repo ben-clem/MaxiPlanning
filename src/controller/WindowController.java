@@ -1,6 +1,7 @@
 package controller;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.IsoFields;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import model.Utilisateur;
@@ -68,7 +69,7 @@ public class WindowController {
 
             // delay
             try {
-                this.wait(1000);
+                this.wait(100);
 
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
@@ -76,6 +77,7 @@ public class WindowController {
 
             // get info
             needRefresh = panelController.getNeedRefresh();
+            
             //System.out.println("needRefresh = " + needRefresh);
             System.out.println(".");
             
@@ -84,8 +86,10 @@ public class WindowController {
 
                 System.out.println("-- needRefresh = " + needRefresh + " --");
                 System.out.println("-- Updating at " + ZonedDateTime.now() + " --");
+                
                 // On va cherche quel est le type de refresh needed
                 refreshType = panelController.getRefreshType();
+                
                 System.out.println("-- refreshType = " + refreshType + " --");
 
                 if (refreshType.equals("loadEDTPanel")) {
@@ -94,8 +98,14 @@ public class WindowController {
                     System.out.println("Loading EDT Panel for");
                     System.out.println("currentUser = " + currentUser.getId());
 
+                    
+                    Integer semaine = panelController.getSemaine();
+                    if (semaine == null) {
+                        semaine = ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+                    }
+                    
                     // On crée la vue et le controlleur
-                    EDTPanel edtPanel = new EDTPanel(currentUser);
+                    EDTPanel edtPanel = new EDTPanel(currentUser, semaine);
                     EDTPanelController edtPanelController = new EDTPanelController(currentUser, edtPanel);
                     
                     
@@ -105,6 +115,25 @@ public class WindowController {
 
                     // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
                     panelController = edtPanelController;
+
+                }
+                if (refreshType.equals("loadRecapPanel")) {
+
+                    currentUser = panelController.getCurrentUser();
+                    System.out.println("Loading Recap Panel for");
+                    System.out.println("currentUser = " + currentUser.getId());
+
+                    // On crée la vue et le controlleur
+                    RecapPanel recapPanel = new RecapPanel(currentUser);
+                    RecapPanelController recapPanelController = new RecapPanelController(currentUser, recapPanel);
+                    
+                    
+                    // On affiche
+                    winCon.win.setContentPane(recapPanel);
+                    winCon.win.setVisible(true);
+
+                    // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
+                    panelController = recapPanelController;
 
                 }
                 if (refreshType.equals("loadSearchPanel")) {

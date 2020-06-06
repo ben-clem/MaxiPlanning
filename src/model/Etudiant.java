@@ -1,5 +1,8 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * class Etudiant couche métier
  */
@@ -46,9 +49,39 @@ public class Etudiant {
 
      /**
      * constructor
+     * @param idUtilisateur
+     * @param numero
+     * @param idGroupe
      */
     public Etudiant(Integer idUtilisateur, Integer numero, Integer idGroupe) {
-        // TODO
+        this.idUtilisateur = idUtilisateur;
+        this.numero = numero;
+        this.idGroupe = idGroupe;
     }
+    
+    public Groupe getGroupe() {
+        
+        Groupe groupe = new Groupe();
+
+            try {
+
+                // Connection à la DB
+                DB db = new DB();
+                // On va cherche le cours correspondant
+                try (Connection conn = db.connect()) {
+                    // On va cherche le cours correspondant
+                    DAO<Groupe> groupeDAO = new GroupeDAO(conn);
+                    groupe = groupeDAO.find(this.idGroupe);
+                }
+
+            } catch (SQLException e) {
+
+                e.printStackTrace(System.err);
+
+            }
+
+            return groupe;
+    }
+    
 
 }

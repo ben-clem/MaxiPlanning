@@ -37,4 +37,12 @@ WHERE seance.ID_seance = 4\
 - Trouver le nom de la promo associ\'e9e \'e0 un groupe :\
 \
 SELECT * FROM promotion\
-WHERE ID_promotion = }
+WHERE ID_promotion = \
+\
+\
+\
+-\
+SELECT * FROM enseignant\
+INNER JOIN seance_enseignants ON enseignant.ID_utilisateur = seance_enseignants.ID_utilisateur\
+WHERE ID_seance = 8\
+-}

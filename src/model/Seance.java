@@ -95,6 +95,62 @@ public class Seance {
 
         return groupes;
     }
+    
+    /**
+     * méthode pour obtenir toutes les salles dans lesquelles se déroule une séance
+     * @return
+     */
+    public List<Salle> getSalles() {
+
+        List<Salle> salles = new ArrayList<>();
+
+        try {
+
+            // Connection à la DB
+            DB db = new DB();
+            // On va cherche les groupes correspondant
+            try (Connection conn = db.connect()) {
+                // On va cherche les groupes correspondant
+                DAO<Salle> salleDAO = new SalleDAO(conn);
+                salles = salleDAO.findAllWithSeanceId(this.id);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace(System.err);
+
+        }
+
+        return salles;
+    }
+    
+    /**
+     * méthode pour récupérer un enseignant à partir de l'id d'une séance
+     * @return
+     */
+    public Enseignant getEnseignant() {
+
+        Enseignant enseignant = new Enseignant();
+
+        try {
+
+            // Connection à la DB
+            DB db = new DB();
+            // On va cherche le cours correspondant
+            try (Connection conn = db.connect()) {
+                // On va cherche le cours correspondant
+                DAO<Enseignant> enseignantDAO = new EnseignantDAO(conn);
+                enseignant = enseignantDAO.findWithSeanceID(this.id);
+            }
+        } catch (SQLException e) {
+
+            e.printStackTrace(System.err);
+
+        }
+
+        return enseignant;
+        
+        
+    }
 
     public Integer getId() {
         return this.id;

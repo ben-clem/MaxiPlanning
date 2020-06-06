@@ -14,6 +14,8 @@ public abstract class PanelController {
     protected boolean needRefresh = false;
     protected String refreshType;
     protected Utilisateur currentUser;
+    protected Integer semaine;
+    
 
     // GETTERS / SETTERS
     public boolean getNeedRefresh() {
@@ -27,4 +29,9 @@ public abstract class PanelController {
     public String getRefreshType() {
         return this.refreshType;
     }
+    
+    public Integer getSemaine() {
+        return this.semaine;
+    }
+    
 }

@@ -29,9 +29,26 @@ public class EtudiantDAO extends DAO<Etudiant> {
      */
     @Override
     public Etudiant find(Integer id) {
-        Etudiant result = null;
-        // TODO
-        return result;
+        Etudiant etudiant = new Etudiant();
+
+        try {
+
+            ResultSet result = this.connect.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM etudiant WHERE ID_Utilisateur = '" + id + "'");
+            if (result.first()) {
+                etudiant = new Etudiant(
+                        result.getInt("ID_utilisateur"),
+                        result.getInt("Numero"),
+                        result.getInt("ID_Groupe")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(System.err);
+        }
+
+        return etudiant;
     }
 
     /**
@@ -73,6 +90,11 @@ public class EtudiantDAO extends DAO<Etudiant> {
 
     @Override
     public List<Etudiant> findAllWithSeanceId(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Etudiant findWithSeanceID(Integer idSeance) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -37,9 +37,12 @@ public class Site {
 
     /**
      * constructor
+     * @param id
+     * @param nom
      */
     public Site(Integer id, String nom) {
-        // TODO
+        this.id = id;
+        this.nom = nom;
     }
 
 }

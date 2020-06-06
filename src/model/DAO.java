@@ -64,6 +64,8 @@ public abstract class DAO<T> {
     public abstract List<T> findWithStudentId(Integer id);
 
     public abstract List<T> findAllWithSeanceId(Integer id);
+    
+    public abstract T findWithSeanceID(Integer idSeance);
 
     /**
      * ajout dans la BDD
