@@ -21,6 +21,8 @@ public final class EDTPanel extends JPanel {
     private String lastDate;
     private JButton button1;
     private JButton button2;
+    private JButton searchBut;
+    private JButton button3;
     private JComboBox choice;
     private JComboBox choice2;
     private Integer semaine;
@@ -67,12 +69,35 @@ public final class EDTPanel extends JPanel {
 
         button2 = new JButton("Récap Cours");
         button2.setMargin(new Insets(10, 0, 10, 0));
-        button1.setMinimumSize(new Dimension(200, 50));
+        button2.setMinimumSize(new Dimension(200, 50));
         button2.setPreferredSize(new Dimension(200, 50));
         button2.setMaximumSize(new Dimension(200, 50));
         button2.setBackground(Color.WHITE);
         button2.setForeground(bg);
         menuBar.add(button2);
+        
+        searchBut = new JButton("Rechercher");
+        searchBut.setMargin(new Insets(10, 0, 10, 0));
+        searchBut.setMinimumSize(new Dimension(200, 50));
+        searchBut.setPreferredSize(new Dimension(200, 50));
+        searchBut.setMaximumSize(new Dimension(200, 50));
+        searchBut.setBackground(Color.WHITE);
+        searchBut.setForeground(bg);
+        
+        if (user.getDroit() == 2) {
+            menuBar.add(searchBut);
+        }
+
+        menuBar.add(Box.createHorizontalGlue());
+
+        button3 = new JButton("Déconnexion");
+        button3.setMargin(new Insets(10, 0, 10, 0));
+        button3.setMinimumSize(new Dimension(200, 50));
+        button3.setPreferredSize(new Dimension(200, 50));
+        button3.setMaximumSize(new Dimension(200, 50));
+        button3.setBackground(Color.WHITE);
+        button3.setForeground(Color.RED);
+        menuBar.add(button3);
 
         menuBar.setAlignmentX(LEFT_ALIGNMENT);
         borderLayoutPageStart.add(menuBar);
@@ -240,7 +265,7 @@ public final class EDTPanel extends JPanel {
         everySeancesPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 25, 25));
 
         JScrollPane scrollPanel = new JScrollPane(everySeancesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        //scrollPanel.setMinimumSize(new Dimension(2000, 2000));
+        
         scrollPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         this.add(scrollPanel, BorderLayout.LINE_START);
@@ -256,7 +281,7 @@ public final class EDTPanel extends JPanel {
         button1.addActionListener(listenForButton1);
 
     }
-    
+
     /**
      * adds an ActionListener to the button2
      *
@@ -265,6 +290,28 @@ public final class EDTPanel extends JPanel {
     public void addButton2Listener(ActionListener listenForButton2) {
 
         button2.addActionListener(listenForButton2);
+
+    }
+    
+    /**
+     * adds an ActionListener to the searchBut
+     *
+     * @param listenForSearchBut
+     */
+    public void addSearchButListener(ActionListener listenForSearchBut) {
+
+        searchBut.addActionListener(listenForSearchBut);
+
+    }
+
+    /**
+     * adds an ActionListener to the button3
+     *
+     * @param listenForButton3
+     */
+    public void addButton3Listener(ActionListener listenForButton3) {
+
+        button3.addActionListener(listenForButton3);
 
     }
 
