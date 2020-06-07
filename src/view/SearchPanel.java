@@ -32,6 +32,9 @@ public final class SearchPanel extends JPanel {
     private Integer semaine;
     private JPanel choiceDisplay;
 
+    private Integer groupe;
+
+    //private Integer groupe;
     //////////////
     // METHODES //
     //////////////
@@ -45,8 +48,12 @@ public final class SearchPanel extends JPanel {
      * constructor
      *
      * @param user
+     * @param groupe
      */
-    public SearchPanel(Utilisateur user) {
+    public SearchPanel(Utilisateur user, Integer groupe) {
+
+        this.groupe = groupe;
+        System.out.println("***Printing GROUP " + groupe);
 
         // Background et Layout
         setLayout(new BorderLayout());
@@ -90,9 +97,9 @@ public final class SearchPanel extends JPanel {
         searchBut.setMaximumSize(new Dimension(200, 50));
         searchBut.setBackground(bg);
         searchBut.setForeground(Color.WHITE);
-        
+
         menuBar.add(searchBut);
-        
+
         addBut = new JButton("Ajouter");
         addBut.setMargin(new Insets(10, 0, 10, 0));
         addBut.setMinimumSize(new Dimension(200, 50));
@@ -123,13 +130,33 @@ public final class SearchPanel extends JPanel {
         choiceDisplay = new JPanel();
         choiceDisplay.setLayout(new BoxLayout(choiceDisplay, BoxLayout.LINE_AXIS));
 
-        JLabel hello = new JLabel(" Bonjour " + user.getPrenom()
-                + " (" + user.getNomDroit() + ") ");
+        JLabel hello = new JLabel(" Rechercher :");
         choiceDisplay.add(hello);
 
-        
+        JLabel affichage = new JLabel("  -  par groupe : ");
+        choiceDisplay.add(affichage);
+
+        String[] listeGroupes = {"Groupe", "Ing1 Gr01", "Ing1 Gr02", "Ing1 Gr03", "Ing2 Gr01", "Ing2 Gr02", "Ing2 Gr03", "Ing3 Gr01", "Ing3 Gr02", "Ing3 Gr03"};
+        this.choice = new JComboBox(listeGroupes);
+
+        if (groupe != null) {
+            choice.setSelectedIndex(groupe);
+        } else {
+
+        }
+
+        choice.setMaximumSize(choice.getPreferredSize());
+        choiceDisplay.add(choice);
+
+//        JLabel semaineLabel = new JLabel("  -  Semaine : ");
+//        choiceDisplay.add(semaineLabel);
+//
+//        Integer[] choices2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53};
+//        this.choice2 = new JComboBox(choices2);
+//        choice2.setSelectedItem(semaine);
+//        choice2.setMaximumSize(choice2.getPreferredSize());
+//        choiceDisplay.add(choice2);
         choiceDisplay.setAlignmentX(LEFT_ALIGNMENT);
-        choiceDisplay.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         borderLayoutPageStart.add(Box.createRigidArea(new Dimension(0, 5)));
 
@@ -141,6 +168,8 @@ public final class SearchPanel extends JPanel {
 
     public void showSeances(List<Seance> seances) {
 
+        System.out.println("***printing SEANCES ");
+
         JPanel everySeancesPanel = new JPanel();
         everySeancesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -148,112 +177,108 @@ public final class SearchPanel extends JPanel {
 
         seances.forEach((seance) -> { // Pour chaque séance :
 
-            if (Objects.equals(seance.getSemaine(), this.semaine)) {
+            // Panel
+            JPanel seancePanel = new JPanel();
+            seancePanel.setLayout(new BoxLayout(seancePanel, BoxLayout.PAGE_AXIS));
+            seancePanel.setPreferredSize(new Dimension(750, 50));
+            seancePanel.setMaximumSize(new Dimension(1500, 100));
+            seancePanel.setOpaque(true);
+            seancePanel.setBackground(new Color(147, 219, 179));
 
-                // Panel
-                JPanel seancePanel = new JPanel();
-                seancePanel.setLayout(new BoxLayout(seancePanel, BoxLayout.PAGE_AXIS));
-                seancePanel.setPreferredSize(new Dimension(750, 50));
-                seancePanel.setMaximumSize(new Dimension(1500, 100));
-                seancePanel.setOpaque(true);
-                seancePanel.setBackground(new Color(147, 219, 179));
+            // Date
+            String date = seance.getDate().format(DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy", Locale.FRANCE));
 
-                // Date
-                String date = seance.getDate().format(DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy", Locale.FRANCE));
+            if (lastDate == null ? date != null : !lastDate.equals(date)) {
+                seancePanel.setPreferredSize(new Dimension(750, 80));
 
-                if (lastDate == null ? date != null : !lastDate.equals(date)) {
-                    seancePanel.setPreferredSize(new Dimension(750, 80));
-
-                    JLabel dateLabel = new JLabel(" " + date);
+                JLabel dateLabel = new JLabel(" " + date);
 //            date.setOpaque(true);
 //            date.setBackground(Color.GREEN);
-                    dateLabel.setMinimumSize(new Dimension(1500, 30));
-                    dateLabel.setPreferredSize(new Dimension(1500, 30));
-                    dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-                    seancePanel.add(dateLabel);
-                } else {
-                    seancePanel.setMaximumSize(new Dimension(1500, 80));
-                }
-
-                // Infos
-                JPanel infosSeance = new JPanel();
-                infosSeance.setLayout(new BoxLayout(infosSeance, BoxLayout.LINE_AXIS));
-                infosSeance.setBackground(new Color(230, 230, 230));
-                infosSeance.setMinimumSize(new Dimension(1500, 50));
-                infosSeance.setPreferredSize(new Dimension(750, 50));
-                infosSeance.setMaximumSize(new Dimension(1500, 100));
-                infosSeance.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-                // Gauche
-                JLabel horaires = new JLabel(seance.getHeureDebut().withSecond(00).toString() + " - " + seance.getHeureFin().withSecond(00).toString() + "  :");
-                horaires.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-                infosSeance.add(horaires);
-
-                JLabel nomTypeCours = new JLabel(seance.getCours().getNom() + " (" + seance.getTypeCours().getNom() + ")");
-                nomTypeCours.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
-                infosSeance.add(nomTypeCours);
-
-                //infosSeance.add(Box.createRigidArea(new Dimension(40, 0)));
-                //infosSeance.add(Box.createHorizontalGlue());
-                System.out.println("-debug- " + seance.getEnseignant());
-                System.out.println("-debug- " + seance.getEnseignant().getNom());
-
-                Enseignant ens = seance.getEnseignant();
-                System.out.println("-debug- ens : " + ens);
-
-                String nom = ens.getNom().toUpperCase();
-                System.out.println("-debug- nom : " + nom);
-
-                JLabel enseignant = new JLabel("  -  " + nom);
-
-                infosSeance.add(enseignant);
-
-                infosSeance.add(Box.createHorizontalGlue());
-
-                // Droite
-                //salles
-                JPanel sallesPanel = new JPanel();
-                sallesPanel.setLayout(new BoxLayout(sallesPanel, BoxLayout.PAGE_AXIS));
-
-                List<Salle> salles = seance.getSalles();
-                salles.forEach((salle) -> {
-
-                    //System.out.println("-debug- " + salle.getNom());
-                    //System.out.println("-debug- " + salle.getSite().getNom());
-                    JLabel salleLabel = new JLabel(salle.getSite().getNom() + " - " + salle.getNom() + " (" + salle.getCapacite() + ")");
-                    sallesPanel.add(salleLabel);
-
-                });
-
-                infosSeance.add(sallesPanel);
-                infosSeance.add(Box.createRigidArea(new Dimension(40, 0)));
-
-                //groupes
-                JPanel groupesPanel = new JPanel();
-                groupesPanel.setLayout(new BoxLayout(groupesPanel, BoxLayout.PAGE_AXIS));
-
-                List<Groupe> groupes = seance.getGroupes();
-                groupes.forEach((groupe) -> {
-
-                    JLabel groupeLabel = new JLabel(groupe.getPromoName() + " " + groupe.getNom());
-                    groupesPanel.add(groupeLabel);
-
-                });
-
-                infosSeance.add(groupesPanel);
-
-                // Fin
-                infosSeance.add(Box.createRigidArea(new Dimension(5, 0)));
-
-                seancePanel.add(infosSeance);
-                seancePanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
-                everySeancesPanel.add(seancePanel);
-
-                this.lastDate = date;
+                dateLabel.setMinimumSize(new Dimension(1500, 30));
+                dateLabel.setPreferredSize(new Dimension(1500, 30));
+                dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                seancePanel.add(dateLabel);
             } else {
-
+                seancePanel.setMaximumSize(new Dimension(1500, 80));
             }
+
+            // Infos
+            JPanel infosSeance = new JPanel();
+            infosSeance.setLayout(new BoxLayout(infosSeance, BoxLayout.LINE_AXIS));
+            infosSeance.setBackground(new Color(230, 230, 230));
+            infosSeance.setMinimumSize(new Dimension(1500, 50));
+            infosSeance.setPreferredSize(new Dimension(750, 50));
+            infosSeance.setMaximumSize(new Dimension(1500, 100));
+            infosSeance.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            // Gauche
+            JLabel horaires = new JLabel(seance.getHeureDebut().withSecond(00).toString() + " - " + seance.getHeureFin().withSecond(00).toString() + "  :");
+            horaires.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            infosSeance.add(horaires);
+
+            JLabel nomTypeCours = new JLabel(seance.getCours().getNom() + " (" + seance.getTypeCours().getNom() + ")");
+            nomTypeCours.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
+            infosSeance.add(nomTypeCours);
+
+            //infosSeance.add(Box.createRigidArea(new Dimension(40, 0)));
+            //infosSeance.add(Box.createHorizontalGlue());
+            System.out.println("-debug- " + seance.getEnseignant());
+            System.out.println("-debug- " + seance.getEnseignant().getNom());
+
+            Enseignant ens = seance.getEnseignant();
+            System.out.println("-debug- ens : " + ens);
+
+            String nom = ens.getNom().toUpperCase();
+            System.out.println("-debug- nom : " + nom);
+
+            JLabel enseignant = new JLabel("  -  " + nom);
+
+            infosSeance.add(enseignant);
+
+            infosSeance.add(Box.createHorizontalGlue());
+
+            // Droite
+            //salles
+            JPanel sallesPanel = new JPanel();
+            sallesPanel.setLayout(new BoxLayout(sallesPanel, BoxLayout.PAGE_AXIS));
+
+            List<Salle> salles = seance.getSalles();
+            salles.forEach((salle) -> {
+
+                //System.out.println("-debug- " + salle.getNom());
+                //System.out.println("-debug- " + salle.getSite().getNom());
+                JLabel salleLabel = new JLabel(salle.getSite().getNom() + " - " + salle.getNom() + " (" + salle.getCapacite() + ")");
+                sallesPanel.add(salleLabel);
+
+            });
+
+            infosSeance.add(sallesPanel);
+            infosSeance.add(Box.createRigidArea(new Dimension(40, 0)));
+
+            //groupes
+            JPanel groupesPanel = new JPanel();
+            groupesPanel.setLayout(new BoxLayout(groupesPanel, BoxLayout.PAGE_AXIS));
+
+            List<Groupe> groupes = seance.getGroupes();
+            groupes.forEach((groupe) -> {
+
+                JLabel groupeLabel = new JLabel(groupe.getPromoName() + " " + groupe.getNom());
+                groupesPanel.add(groupeLabel);
+
+            });
+
+            infosSeance.add(groupesPanel);
+
+            // Fin
+            infosSeance.add(Box.createRigidArea(new Dimension(5, 0)));
+
+            seancePanel.add(infosSeance);
+            seancePanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
+            everySeancesPanel.add(seancePanel);
+
+            this.lastDate = date;
+
         });
 
         everySeancesPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 25, 25));
@@ -297,7 +322,7 @@ public final class SearchPanel extends JPanel {
         searchBut.addActionListener(listenForSearchBut);
 
     }
-    
+
     /**
      * adds an ActionListener to the addBut
      *
@@ -309,6 +334,7 @@ public final class SearchPanel extends JPanel {
 
     }
 
+    // deco
     /**
      * adds an ActionListener to the button3
      *
@@ -320,6 +346,7 @@ public final class SearchPanel extends JPanel {
 
     }
 
+    // NEW
     /**
      * adds an ActionListener to the JComboBox choiche
      *
@@ -327,10 +354,11 @@ public final class SearchPanel extends JPanel {
      */
     public void addChoiceListener(ActionListener listenForChoice) {
 
-        choice2.addActionListener(listenForChoice);
+        choice.addActionListener(listenForChoice);
 
     }
 
+    // ?
     /**
      * adds an ActionListener to the JComboBox choiche2
      *
@@ -339,6 +367,12 @@ public final class SearchPanel extends JPanel {
     public void addChoice2Listener(ActionListener listenForChoice2) {
 
         choice2.addActionListener(listenForChoice2);
+
+    }
+
+    public void removeChoice() {
+
+        choiceDisplay.remove(choice);
 
     }
 
@@ -366,8 +400,9 @@ public final class SearchPanel extends JPanel {
      */
     public void popupWarning(String message) {
 
-        JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
-
+        if (groupe != null) {
+            JOptionPane.showMessageDialog(this, message, "Warning", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     /**

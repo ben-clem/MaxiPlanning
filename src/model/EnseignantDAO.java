@@ -112,4 +112,9 @@ public class EnseignantDAO extends DAO<Enseignant> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<Enseignant> findAllWithGroupId(Integer groupId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

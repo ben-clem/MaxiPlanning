@@ -88,4 +88,9 @@ public class SeanceEnseignantsDAO extends DAO<SeanceEnseignants> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<SeanceEnseignants> findAllWithGroupId(Integer groupId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

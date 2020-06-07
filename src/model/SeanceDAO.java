@@ -95,6 +95,40 @@ public class SeanceDAO extends DAO<Seance> {
     }
 
     /**
+     * recherche des séances avec l'id d'un groupe
+     *
+     * @param groupId
+     * @return
+     */
+    @Override
+    public List<Seance> findAllWithGroupId(Integer groupId) {
+        
+        List<Seance> seances = new ArrayList<>();
+
+        try {
+            ResultSet result = this.connect.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM seance\n"
+                            + "INNER JOIN seance_groupes ON seance.ID_seance = seance_groupes.ID_seance\n"
+                            + "WHERE seance_groupes.ID_groupe = " + groupId);
+            while (result.next()) {
+                seances.add(new Seance(
+                        result.getInt("ID_seance"),
+                        result.getInt("Semaine"),
+                        result.getDate("Date").toLocalDate(),
+                        result.getTime("Heure_debut").toLocalTime(),
+                        result.getTime("Heure_fin").toLocalTime(),
+                        result.getInt("Etat"),
+                        result.getInt("ID_cours"),
+                        result.getInt("ID_type")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(System.err);
+        }
+        return seances;
+    }
+    
+    /**
      * ajout dans la BDD
      */
     @Override

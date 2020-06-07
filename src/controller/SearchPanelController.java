@@ -51,7 +51,7 @@ public final class SearchPanelController extends PanelController {
         }
 
     }
-    
+
     // On implémente l'ActionListener du SearchBut
     class SearchButListener implements ActionListener {
 
@@ -64,7 +64,7 @@ public final class SearchPanelController extends PanelController {
         }
 
     }
-    
+
     // On implémente l'ActionListener du AddBut
     class AddButListener implements ActionListener {
 
@@ -90,10 +90,27 @@ public final class SearchPanelController extends PanelController {
         }
 
     }
-    
-    
 
+    // On implémente l'ActionListener du choiceSemaine
+    class ChoiceListener implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            JComboBox choice = (JComboBox) event.getSource();
+
+            Integer groupId = choice.getSelectedIndex();
+
+            theView.removeChoice(); // Pour fix le bug où on accédait une deuxième fois au JComboBoc alors que la page était en train dêtre supprimée / regénérée
+
+            System.out.println("-debug- groupID : " + groupId);
+
+            needRefresh = true;
+            refreshType = "loadSearchPanel";
+            groupe = groupId;
+
+        }
+    }
 
 //////////////
 // METHODES //
@@ -103,11 +120,16 @@ public final class SearchPanelController extends PanelController {
      *
      * @param user
      * @param theView
+     * @param groupe
      */
-    public SearchPanelController(Utilisateur user, SearchPanel theView) {
+    public SearchPanelController(Utilisateur user, SearchPanel theView, Integer groupe) {
 
         this.theView = theView;
         currentUser = user;
+        
+        this.groupe = groupe;
+
+        fetchSeances();
 
         // add buttons listeners
         // On connecte l'ActionListener à la vue
@@ -116,7 +138,9 @@ public final class SearchPanelController extends PanelController {
         this.theView.addSearchButListener(new SearchButListener());
         this.theView.addAddButListener(new AddButListener());
         this.theView.addButton3Listener(new Button3Listener());
-        
+
+        this.theView.addChoiceListener(new ChoiceListener());
+
     }
 
     /**
@@ -137,17 +161,13 @@ public final class SearchPanelController extends PanelController {
                 // On va cherche l'utilisateur correspondant
                 DAO<Seance> seanceDAO = new SeanceDAO(conn);
 
-                if (currentUser.getDroit() == 4) {
-                    seances = seanceDAO.findWithStudentId(currentUser.getId());
-                } else {
-                    seances = seanceDAO.findWithProfId(currentUser.getId());
-                }
+                seances = seanceDAO.findAllWithGroupId(this.groupe);
 
             }
 
             // On affiche dans la console
             seances.forEach((seance) -> {
-                //System.out.println("Seance : " + seance.getId());
+                System.out.println("Seance : " + seance.getId());
             });
 
             // Si pas de séances :

@@ -16,6 +16,10 @@ public abstract class PanelController {
     protected Utilisateur currentUser;
     protected Integer semaine;
     
+    //Pour recherche : (+ semaine au dessus) - commencer par recherche par groupes
+    protected Integer groupe;
+   
+    
 
     // GETTERS / SETTERS
     public boolean getNeedRefresh() {
@@ -32,6 +36,10 @@ public abstract class PanelController {
     
     public Integer getSemaine() {
         return this.semaine;
+    }
+    
+    public Integer getGroupe() {
+        return this.groupe;
     }
     
 }

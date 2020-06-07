@@ -84,5 +84,10 @@ public class SeanceSallesDAO extends DAO<SeanceSalles> {
     public List<SeanceSalles> findWithProfId(Integer profId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<SeanceSalles> findAllWithGroupId(Integer groupId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

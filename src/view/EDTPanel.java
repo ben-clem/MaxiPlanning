@@ -147,6 +147,8 @@ public final class EDTPanel extends JPanel {
 
     public void showSeances(List<Seance> seances) {
 
+        
+        
         JPanel everySeancesPanel = new JPanel();
         everySeancesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 

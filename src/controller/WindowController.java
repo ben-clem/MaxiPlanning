@@ -80,7 +80,6 @@ public class WindowController {
 
             //System.out.println("needRefresh = " + needRefresh);
             //System.out.println(".");
-
             // S'il y a besoin de refresh :
             if (needRefresh == true) {
 
@@ -144,8 +143,15 @@ public class WindowController {
                         System.out.println("currentUser = " + currentUser.getId());
 
                         // On crée la vue et le controlleur
-                        SearchPanel searchPanel = new SearchPanel(currentUser);
-                        SearchPanelController searchPanelController = new SearchPanelController(currentUser, searchPanel);
+                        SearchPanel searchPanel;
+
+                        Integer groupe = panelController.getGroupe();
+
+                        
+                        searchPanel = new SearchPanel(currentUser, groupe);
+                        System.out.println("***Loading GROUP " + groupe);
+
+                        SearchPanelController searchPanelController = new SearchPanelController(currentUser, searchPanel, groupe);
 
                         // On affiche
                         winCon.win.setContentPane(searchPanel);
