@@ -107,4 +107,9 @@ public class EnseignantDAO extends DAO<Enseignant> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<Enseignant> findWithProfId(Integer profId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

@@ -132,6 +132,11 @@ public class UtilisateurDAO extends DAO<Utilisateur> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List<Utilisateur> findWithProfId(Integer profId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
   
 
 }
