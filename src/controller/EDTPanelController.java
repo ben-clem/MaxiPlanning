@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import model.DAO;
 import model.DB;
@@ -39,8 +37,8 @@ public final class EDTPanelController extends PanelController {
         }
 
     }
-    
-        // On implémente l'ActionListener du button2
+
+    // On implémente l'ActionListener du button2
     class Button2Listener implements ActionListener {
 
         @Override
@@ -48,6 +46,32 @@ public final class EDTPanelController extends PanelController {
 
             needRefresh = true;
             refreshType = "loadRecapPanel";
+
+        }
+
+    }
+    
+    // On implémente l'ActionListener du SearchBut
+    class SearchButListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            needRefresh = true;
+            refreshType = "loadSearchPanel";
+
+        }
+
+    }
+
+    // On implémente l'ActionListener du button3
+    class Button3Listener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            needRefresh = true;
+            refreshType = "decoReco";
 
         }
 
@@ -105,6 +129,8 @@ public final class EDTPanelController extends PanelController {
         // On connecte l'ActionListener à la vue
         this.theView.addButton1Listener(new Button1Listener());
         this.theView.addButton2Listener(new Button2Listener());
+        this.theView.addSearchButListener(new SearchButListener());
+        this.theView.addButton3Listener(new Button3Listener());
         this.theView.addChoiceListener(new ChoiceListener());
         this.theView.addChoice2Listener(new Choice2Listener());
     }
@@ -123,9 +149,16 @@ public final class EDTPanelController extends PanelController {
 
             // On va cherche l'utilisateur correspondant
             try (Connection conn = db.connect()) {
+
                 // On va cherche l'utilisateur correspondant
                 DAO<Seance> seanceDAO = new SeanceDAO(conn);
-                seances = seanceDAO.findWithStudentId(currentUser.getId());
+
+                if (currentUser.getDroit() == 4) {
+                    seances = seanceDAO.findWithStudentId(currentUser.getId());
+                } else {
+                    seances = seanceDAO.findWithProfId(currentUser.getId());
+                }
+
             }
 
             // On affiche dans la console

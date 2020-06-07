@@ -22,6 +22,8 @@ public final class RecapPanel extends JPanel {
 
     private JButton button1;
     private JButton button2;
+    private JButton searchBut;
+    private JButton button3;
     private JPanel choiceDisplay;
     private Integer lastIdCours;
     private Integer lastIdType;
@@ -71,6 +73,29 @@ public final class RecapPanel extends JPanel {
         button2.setForeground(Color.WHITE);
         menuBar.add(button2);
 
+        searchBut = new JButton("Rechercher");
+        searchBut.setMargin(new Insets(10, 0, 10, 0));
+        searchBut.setMinimumSize(new Dimension(200, 50));
+        searchBut.setPreferredSize(new Dimension(200, 50));
+        searchBut.setMaximumSize(new Dimension(200, 50));
+        searchBut.setBackground(Color.WHITE);
+        searchBut.setForeground(bg);
+
+        if (user.getDroit() == 2) {
+            menuBar.add(searchBut);
+        }
+
+        menuBar.add(Box.createHorizontalGlue());
+
+        button3 = new JButton("Déconnexion");
+        button3.setMargin(new Insets(10, 0, 10, 0));
+        button3.setMinimumSize(new Dimension(200, 50));
+        button3.setPreferredSize(new Dimension(200, 50));
+        button3.setMaximumSize(new Dimension(200, 50));
+        button3.setBackground(Color.WHITE);
+        button3.setForeground(Color.RED);
+        menuBar.add(button3);
+
         menuBar.setAlignmentX(LEFT_ALIGNMENT);
         borderLayoutPageStart.add(menuBar);
 
@@ -78,7 +103,7 @@ public final class RecapPanel extends JPanel {
         choiceDisplay = new JPanel();
         choiceDisplay.setLayout(new BoxLayout(choiceDisplay, BoxLayout.LINE_AXIS));
 
-        JLabel hello = new JLabel("  Bonjour " + user.getPrenom()
+        JLabel hello = new JLabel(" Bonjour " + user.getPrenom()
                 + " (" + user.getNomDroit() + ") ");
         choiceDisplay.add(hello);
 
@@ -121,6 +146,9 @@ public final class RecapPanel extends JPanel {
             if (!Objects.equals(lastIdCours, seance.getIdCours()) || !Objects.equals(lastIdType, seance.getIdType())) {
                 seancePanel.setPreferredSize(new Dimension(750, 55));
 
+                System.out.println("-- debug : lastIdCours = " + lastIdCours + " seance.getIdCours() = " + seance.getIdCours());
+                System.out.println("-- debug : lastIdType = " + lastIdType + " seance.getIdType() = " + seance.getIdType());
+
                 JLabel dateLabel = new JLabel(" " + seance.getCours().getNom() + " (" + seance.getTypeCours().getNom() + ") ");
 
                 dateLabel.setMinimumSize(new Dimension(1500, 30));
@@ -128,7 +156,7 @@ public final class RecapPanel extends JPanel {
                 dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
                 seancePanel.add(dateLabel);
             } else {
-                seancePanel.setMaximumSize(new Dimension(1500, 80));
+                seancePanel.setPreferredSize(new Dimension(750, 25));
             }
 
             // Infos
@@ -203,6 +231,28 @@ public final class RecapPanel extends JPanel {
     public void addButton2Listener(ActionListener listenForButton2) {
 
         button2.addActionListener(listenForButton2);
+
+    }
+
+    /**
+     * adds an ActionListener to the searchBut
+     *
+     * @param listenForSearchBut
+     */
+    public void addSearchButListener(ActionListener listenForSearchBut) {
+
+        searchBut.addActionListener(listenForSearchBut);
+
+    }
+    
+    /**
+     * adds an ActionListener to the button3
+     *
+     * @param listenForButton3
+     */
+    public void addButton3Listener(ActionListener listenForButton3) {
+
+        button3.addActionListener(listenForButton3);
 
     }
 

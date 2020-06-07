@@ -77,71 +77,120 @@ public class WindowController {
 
             // get info
             needRefresh = panelController.getNeedRefresh();
-            
+
             //System.out.println("needRefresh = " + needRefresh);
-            System.out.println(".");
-            
+            //System.out.println(".");
+
             // S'il y a besoin de refresh :
             if (needRefresh == true) {
 
                 System.out.println("-- needRefresh = " + needRefresh + " --");
                 System.out.println("-- Updating at " + ZonedDateTime.now() + " --");
-                
+
                 // On va cherche quel est le type de refresh needed
                 refreshType = panelController.getRefreshType();
-                
+
                 System.out.println("-- refreshType = " + refreshType + " --");
 
-                if (refreshType.equals("loadEDTPanel")) {
+                switch (refreshType) {
 
-                    currentUser = panelController.getCurrentUser();
-                    System.out.println("Loading EDT Panel for");
-                    System.out.println("currentUser = " + currentUser.getId());
+                    case "loadEDTPanel":
 
-                    
-                    Integer semaine = panelController.getSemaine();
-                    if (semaine == null) {
-                        semaine = ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
-                    }
-                    
-                    // On crée la vue et le controlleur
-                    EDTPanel edtPanel = new EDTPanel(currentUser, semaine);
-                    EDTPanelController edtPanelController = new EDTPanelController(currentUser, edtPanel);
-                    
-                    
-                    // On affiche
-                    winCon.win.setContentPane(edtPanel);
-                    winCon.win.setVisible(true);
+                        currentUser = panelController.getCurrentUser();
+                        System.out.println("Loading EDT Panel for");
+                        System.out.println("currentUser = " + currentUser.getId());
 
-                    // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
-                    panelController = edtPanelController;
+                        Integer semaine = panelController.getSemaine();
+                        if (semaine == null) {
+                            semaine = ZonedDateTime.now().get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+                        }
 
-                }
-                if (refreshType.equals("loadRecapPanel")) {
+                        // On crée la vue et le controlleur
+                        EDTPanel edtPanel = new EDTPanel(currentUser, semaine);
+                        EDTPanelController edtPanelController = new EDTPanelController(currentUser, edtPanel);
 
-                    currentUser = panelController.getCurrentUser();
-                    System.out.println("Loading Recap Panel for");
-                    System.out.println("currentUser = " + currentUser.getId());
+                        // On affiche
+                        winCon.win.setContentPane(edtPanel);
+                        winCon.win.setVisible(true);
 
-                    // On crée la vue et le controlleur
-                    RecapPanel recapPanel = new RecapPanel(currentUser);
-                    RecapPanelController recapPanelController = new RecapPanelController(currentUser, recapPanel);
-                    
-                    
-                    // On affiche
-                    winCon.win.setContentPane(recapPanel);
-                    winCon.win.setVisible(true);
+                        // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
+                        panelController = edtPanelController;
 
-                    // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
-                    panelController = recapPanelController;
+                        break;
 
-                }
-                if (refreshType.equals("loadSearchPanel")) {
+                    case "loadRecapPanel":
 
-                    currentUser = panelController.getCurrentUser();
-                    System.out.println("Loading Search Panel for");
-                    System.out.println("currentUser = " + currentUser.getId());
+                        currentUser = panelController.getCurrentUser();
+                        System.out.println("Loading Recap Panel for");
+                        System.out.println("currentUser = " + currentUser.getId());
 
+                        // On crée la vue et le controlleur
+                        RecapPanel recapPanel = new RecapPanel(currentUser);
+                        RecapPanelController recapPanelController = new RecapPanelController(currentUser, recapPanel);
+
+                        // On affiche
+                        winCon.win.setContentPane(recapPanel);
+                        winCon.win.setVisible(true);
+
+                        // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
+                        panelController = recapPanelController;
+
+                        break;
+
+                    case "loadSearchPanel":
+
+                        currentUser = panelController.getCurrentUser();
+                        System.out.println("Loading Search Panel for");
+                        System.out.println("currentUser = " + currentUser.getId());
+
+                        // On crée la vue et le controlleur
+                        SearchPanel searchPanel = new SearchPanel(currentUser);
+                        SearchPanelController searchPanelController = new SearchPanelController(currentUser, searchPanel);
+
+                        // On affiche
+                        winCon.win.setContentPane(searchPanel);
+                        winCon.win.setVisible(true);
+
+                        // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
+                        panelController = searchPanelController;
+
+                        break;
+
+                    case "loadAddPanel":
+
+                        currentUser = panelController.getCurrentUser();
+                        System.out.println("Loading Add Panel for");
+                        System.out.println("currentUser = " + currentUser.getId());
+
+                        // On crée la vue et le controlleur
+                        AddPanel addPanel = new AddPanel(currentUser);
+                        AddPanelController addPanelController = new AddPanelController(currentUser, addPanel);
+
+                        // On affiche
+                        winCon.win.setContentPane(addPanel);
+                        winCon.win.setVisible(true);
+
+                        // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
+                        panelController = addPanelController;
+
+                        break;
+
+                    case "decoReco":
+
+                        System.out.println("DecoReco");
+
+                        // On crée la vue et le controlleur
+                        ConnectionPanel connPanel = new ConnectionPanel();
+                        ConnectionPanelController connPanelController = new ConnectionPanelController(connPanel);
+
+                        // On affiche
+                        winCon.win.setContentPane(connPanel);
+                        winCon.win.setVisible(true);
+
+                        // On dit à l'updateLoop de se réferer au nouveau panel (fixe needRefresh à false au passage) 
+                        panelController = connPanelController;
+
+                        break;
                 }
 
                 // UPDATE
@@ -151,8 +200,8 @@ public class WindowController {
         }
 
     }
-
     // GETTERS / SETTERS
+
     public void setCurrentUser(Utilisateur user) {
         this.currentUser = user;
     }

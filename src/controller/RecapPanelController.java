@@ -49,6 +49,32 @@ public final class RecapPanelController extends PanelController {
         }
 
     }
+    
+    // On implémente l'ActionListener du SearchBut
+    class SearchButListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            needRefresh = true;
+            refreshType = "loadSearchPanel";
+
+        }
+
+    }
+    
+    // On implémente l'ActionListener du button3
+    class Button3Listener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+
+            needRefresh = true;
+            refreshType = "decoReco";
+
+        }
+
+    }
 
 
 
@@ -73,6 +99,9 @@ public final class RecapPanelController extends PanelController {
         // On connecte l'ActionListener à la vue
         this.theView.addButton1Listener(new Button1Listener());
         this.theView.addButton2Listener(new Button2Listener());
+        this.theView.addSearchButListener(new SearchButListener());
+        this.theView.addButton3Listener(new Button3Listener());
+
     }
 
     /**
@@ -89,9 +118,15 @@ public final class RecapPanelController extends PanelController {
 
             // On va cherche l'utilisateur correspondant
             try (Connection conn = db.connect()) {
+                
                 // On va cherche l'utilisateur correspondant
                 DAO<Seance> seanceDAO = new SeanceDAO(conn);
-                seances = seanceDAO.findWithStudentId(currentUser.getId());
+                
+                if (currentUser.getDroit() == 4) {
+                    seances = seanceDAO.findWithStudentId(currentUser.getId());
+                } else {
+                    seances = seanceDAO.findWithProfId(currentUser.getId());
+                }
             }
 
             // Si pas de séances :
