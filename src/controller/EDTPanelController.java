@@ -16,7 +16,7 @@ import model.Utilisateur;
 import view.EDTPanel;
 
 /**
- * @generated
+ * 
  */
 public final class EDTPanelController extends PanelController {
 

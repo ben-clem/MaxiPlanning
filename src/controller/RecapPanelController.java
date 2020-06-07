@@ -15,7 +15,7 @@ import model.Utilisateur;
 import view.RecapPanel;
 
 /**
- * @generated
+ * 
  */
 public final class RecapPanelController extends PanelController {
 

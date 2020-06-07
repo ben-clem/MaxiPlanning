@@ -4,13 +4,13 @@ import javax.swing.JPanel;
 
 
 /**
-* @generated
+* 
 */
 public class DeletePanel extends JPanel {
     
     
     /**
-    * @generated
+    * 
     */
     private Window w;
     
@@ -19,7 +19,7 @@ public class DeletePanel extends JPanel {
     
     /**
      * @return 
-    * @generated
+    * 
     */
     public Window getW() {
         return this.w;
@@ -27,7 +27,7 @@ public class DeletePanel extends JPanel {
     
     /**
      * @param w
-    * @generated
+    * 
     */
     public void setW(Window w) {
         this.w = w;

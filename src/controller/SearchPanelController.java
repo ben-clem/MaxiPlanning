@@ -17,7 +17,7 @@ import view.EDTPanel;
 import view.SearchPanel;
 
 /**
- * @generated
+ * 
  */
 public final class SearchPanelController extends PanelController {
 

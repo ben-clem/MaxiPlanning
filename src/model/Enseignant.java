@@ -51,7 +51,7 @@ public class Enseignant {
 
     /**
      * base constructor (avec id et list des id de cours que donne l'enseignant (ex: id(Traitement du signal), id(VHDL))
-     * Mieux : faire que Enseignant contienne une List< Cours >
+     * Mieux : faire que Enseignant contienne une List de Cours
      * @param idUtilisateur
      * @param idCours
      */
